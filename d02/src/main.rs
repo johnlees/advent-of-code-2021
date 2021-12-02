@@ -30,5 +30,5 @@ fn main() {
   }
 
   println!("Part 1: {}", x * y1);
-  println!("Part 1: {}", x * y2);
+  println!("Part 2: {}", x * y2);
 }
