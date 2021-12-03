@@ -12,16 +12,16 @@ fn main() {
     let line = line.expect("Unable to read line");
     let v: Vec<&str> = line.split_whitespace().collect();
     let amount: i64 = v[1].parse().unwrap();
-    match v[0] {
-      "forward" => {
+    match &v[0] {
+      &"forward" => {
         x += amount;
         y2 += aim * amount;
       },
-      "down" => {
+      &"down" => {
         y1 += amount;
         aim += amount;
       },
-      "up" => {
+      &"up" => {
         y1 -= amount;
         aim -= amount;
       },
