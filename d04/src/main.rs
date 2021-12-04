@@ -9,6 +9,7 @@ const GRID_SIZE: usize = 5;
 
 fn score_grid(grid: &Array2::<i32>, calls: &HashMap<i32, usize>) -> (i32, usize) {
   let mut position = Vec::new();
+  // Iterate over rows and columns
   for row in 0..GRID_SIZE {
     let mut last_called_row = 0;
     let mut last_called_col = 0;
@@ -23,6 +24,7 @@ fn score_grid(grid: &Array2::<i32>, calls: &HashMap<i32, usize>) -> (i32, usize)
     position.push(last_called_row);
     position.push(last_called_col);
   }
+  // Calculate score
   let best_pos = *position.iter().min().unwrap();
   let mut score = 0;
   for val in grid.iter() {
@@ -73,7 +75,7 @@ fn main() {
   // Part 1
   let mut min_rank = calls.len();
   let mut score = 0;
-  for grid in grids {
+  for grid in &grids {
     let (grid_score, position) = score_grid(&grid, &calls);
     if position < min_rank {
       score = grid_score;
@@ -82,5 +84,15 @@ fn main() {
   }
   println!("Part 1: {}", score);
 
-
+  // Part 2
+  let mut max_rank = 0;
+  score = 0;
+  for grid in &grids {
+    let (grid_score, position) = score_grid(&grid, &calls);
+    if position > max_rank {
+      score = grid_score;
+      max_rank = position;
+    }
+  }
+  println!("Part 2: {}", score);
 }
