@@ -2,6 +2,7 @@
 use std::fs::File;
 use std::io::{BufRead, BufReader};
 use std::time::Instant;
+use std::cmp;
 
 use nalgebra::{DVector};
 
@@ -34,11 +35,10 @@ fn main() {
   println!("Part 1: {}", fuel);
 
   let part2 = Instant::now();
-  fuel = i32::MAX;
-  for pos in crabs[0]..(crabs[crabs.len() - 1] + 1) {
-    let fuel_check: i32 = crabs.iter().map(|crab| fuel_used(*crab, pos)).sum();
-    fuel = if fuel_check < fuel {fuel_check} else {fuel};
-  }
+  let candidate_alignment: f64 = crab_vec.sum() as f64 / crab_vec.len() as f64;
+  let fuel1: i32 = crabs.iter().map(|crab| fuel_used(*crab, candidate_alignment.floor() as i32)).sum();
+  let fuel2: i32 = crabs.iter().map(|crab| fuel_used(*crab, candidate_alignment.ceil() as i32)).sum();
+  fuel = cmp::min(fuel1, fuel2);
   println!("Part 2: {}", fuel);
 
   let end = Instant::now();
