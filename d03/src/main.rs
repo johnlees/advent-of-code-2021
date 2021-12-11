@@ -1,6 +1,7 @@
 
 use std::fs::File;
 use std::io::{BufRead, BufReader};
+use std::time::Instant;
 
 use bitvec::prelude::*;
 
@@ -38,6 +39,7 @@ fn bv_to_int(bv: &BitVec) -> u32 {
 }
 
 fn main() {
+  let start = Instant::now();
   let input_file = "input.txt";
   let f = File::open(input_file).expect("Unable to open file");
   let f = BufReader::new(f);
@@ -68,6 +70,7 @@ fn main() {
   }
 
   // Part 1
+  let part1 = Instant::now();
   let (mut gamma, mut epsilon) = (0, 0);
   for col in &col_bits {
     gamma = gamma << 1;
@@ -81,6 +84,7 @@ fn main() {
   println!("Part 1: {}", gamma * epsilon);
 
   // Part 2
+  let part2 = Instant::now();
   let mut oxy_candidates = row_bits.clone();
   let mut co2_candidates = row_bits.clone();
   for col_idx in 0..col_bits.len() {
@@ -94,4 +98,10 @@ fn main() {
   let oxy = bv_to_int(&oxy_candidates[0]);
   let co2 = bv_to_int(&co2_candidates[0]);
   println!("Part 2: {}", oxy * co2);
+
+  let end = Instant::now();
+  println!("parsing: {}µs\npart 1: {}µs\npart 2: {}µs",
+  part1.duration_since(start).as_micros(),
+  part2.duration_since(part1).as_micros(),
+  end.duration_since(part2).as_micros());
 }

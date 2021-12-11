@@ -2,6 +2,7 @@
 use std::fs::File;
 use std::io::{BufRead, BufReader};
 use std::mem;
+use std::time::Instant;
 
 use ndarray::prelude::*;
 
@@ -36,6 +37,7 @@ fn sense_danger(sea: &Array2::<i32>) -> usize {
 }
 
 fn main() {
+  let start = Instant::now();
   let input_file = "input.txt";
   let f = File::open(input_file).expect("Unable to open file");
   let f = BufReader::new(f);
@@ -52,6 +54,7 @@ fn main() {
   }
 
   // Part 1
+  let part1 = Instant::now();
   let mut sea = Array2::<i32>::zeros((max_x + 1, max_y + 1));
   for coor in &vents {
     let (x1, y1, x2, y2) = *coor;
@@ -66,6 +69,7 @@ fn main() {
   println!("Part 1: {}", sense_danger(&sea));
 
   // Part 2
+  let part2 = Instant::now();
   for coor in &vents {
     let (mut x1, mut y1, mut x2, mut y2) = *coor;
     if x1 != x2 && y1 != y2 {
@@ -86,4 +90,10 @@ fn main() {
     }
   }
   println!("Part 2: {}", sense_danger(&sea));
+
+  let end = Instant::now();
+  println!("parsing: {}µs\npart 1: {}µs\npart 2: {}µs",
+  part1.duration_since(start).as_micros(),
+  part2.duration_since(part1).as_micros(),
+  end.duration_since(part2).as_micros());
 }

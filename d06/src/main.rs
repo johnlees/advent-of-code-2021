@@ -20,7 +20,7 @@ fn main() {
   }
 
   // Part 1
-  let start_sim = Instant::now();
+  let part1 = Instant::now();
   let mut next_school: Vec::<usize> = vec![0; 9];
   for _day in 0..80 {
     next_school[0..8].copy_from_slice(&school[1..9]);
@@ -32,6 +32,7 @@ fn main() {
   println!("Part 1: {}", total_fish);
 
   // Part 2
+  let part2 = Instant::now();
   for _day in 80..256 {
     next_school[0..8].copy_from_slice(&school[1..9]);
     next_school[6] += school[0];
@@ -41,5 +42,9 @@ fn main() {
   let total_fish: usize = school.iter().sum();
   println!("Part 2: {}", total_fish);
 
-  println!("parsing: {}µs\nsimulation: {}µs\nall: {}µs", start_sim.duration_since(start).as_micros(), start_sim.elapsed().as_micros(), start.elapsed().as_micros());
+  let end = Instant::now();
+  println!("parsing: {}µs\npart 1: {}µs\npart 2: {}µs",
+           part1.duration_since(start).as_micros(),
+           part2.duration_since(part1).as_micros(),
+           end.duration_since(part2).as_micros());
 }

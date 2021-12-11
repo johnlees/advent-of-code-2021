@@ -2,6 +2,7 @@
 use std::fs::File;
 use std::io::{BufRead, BufReader};
 use std::collections::HashMap;
+use std::time::Instant;
 
 use ndarray::Array2;
 
@@ -39,6 +40,7 @@ fn score_grid(grid: &Array2::<i32>, calls: &HashMap<i32, usize>) -> (i32, usize)
 }
 
 fn main() {
+  let start = Instant::now();
   let input_file = "input.txt";
   let f = File::open(input_file).expect("Unable to open file");
   let mut f = BufReader::new(f);
@@ -73,6 +75,7 @@ fn main() {
   grids.push(array_buf);
 
   // Part 1
+  let part1 = Instant::now();
   let mut min_rank = calls.len();
   let mut score = 0;
   for grid in &grids {
@@ -85,6 +88,7 @@ fn main() {
   println!("Part 1: {}", score);
 
   // Part 2
+  let part2 = Instant::now();
   let mut max_rank = 0;
   score = 0;
   for grid in &grids {
@@ -95,4 +99,10 @@ fn main() {
     }
   }
   println!("Part 2: {}", score);
+
+  let end = Instant::now();
+  println!("parsing: {}µs\npart 1: {}µs\npart 2: {}µs",
+           part1.duration_since(start).as_micros(),
+           part2.duration_since(part1).as_micros(),
+           end.duration_since(part2).as_micros());
 }
