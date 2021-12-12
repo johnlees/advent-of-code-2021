@@ -8,8 +8,9 @@ use regex::Regex;
 
 pub struct Cave {
   large: bool,
+  start: bool,
   end: bool,
-  edges: HashSet<String>,
+  edges: HashSet<u8>,
 }
 
 fn parse_line(text: &str) -> (String, String) {
@@ -24,31 +25,31 @@ fn parse_line(text: &str) -> (String, String) {
 }
 
 // Recursive DFS
-fn cave_dive(caves: &HashMap::<String, Cave>,
-             mut path: &mut Vec::<String>,
-             root: &String,
-             mut visited: &mut HashSet<String>,
+fn cave_dive(caves: &Vec::<Cave>,
+             root: u8,
+             mut visited: &mut Vec::<u8>,
              double_visit: bool) -> usize {
   let mut count = 0;
-  if !caves.get(root).unwrap().large {
-    visited.insert(root.clone());
+  let cave = &caves[root as usize];
+  if !cave.large {
+    visited[root as usize] += 1;
   }
-  path.push(root.clone());
-  if caves.get(root).unwrap().end {
+  if cave.end {
     count += 1;
   } else {
-    for neighbour in caves.get(root).unwrap().edges.iter() {
-      if visited.contains(neighbour) && (neighbour != "start" && neighbour != "end" && double_visit) {
-        count += cave_dive(&caves, &mut path, neighbour, &mut visited, false);
-      } else if !visited.contains(neighbour) {
-        count += cave_dive(&caves, &mut path, neighbour, &mut visited, double_visit);
+    for neighbour in cave.edges.iter() {
+      if visited[*neighbour as usize] == 0 {
+        count += cave_dive(&caves, *neighbour, &mut visited, double_visit);
+      } else if double_visit {
+        let neighbour_cave = &caves[*neighbour as usize];
+        if !neighbour_cave.start && !neighbour_cave.end {
+          count += cave_dive(&caves, *neighbour, &mut visited, false);
+        }
       }
     }
   }
-  path.pop();
-  // Inefficient
-  if !path.contains(root) {
-    visited.remove(root);
+  if visited[root as usize] > 0 {
+    visited[root as usize] -= 1;
   }
   return count;
 }
@@ -60,42 +61,48 @@ fn main() {
   let f = BufReader::new(f);
 
   // Read caves
-  let mut caves: HashMap::<String, Cave> = HashMap::new();
+  let mut caves: Vec<Cave> = Vec::new();
+  let mut names: HashMap<String, u8> = HashMap::new();
+  let mut id_cntr = 0;
   for line in f.lines() {
     let line = line.expect("Unable to read line");
     let (cave1, cave2) = parse_line(&line);
-    if !caves.contains_key(&cave1) {
+    if !names.contains_key(&cave1) {
       let new_cave = Cave {
         large: cave1.to_uppercase() == cave1,
+        start: cave1 == "start",
         end: cave1 == "end",
         edges: HashSet::new()
       };
-      caves.insert(cave1.clone(), new_cave);
+      caves.push(new_cave);
+      names.insert(cave1.clone(), id_cntr);
+      id_cntr += 1;
     }
-    if !caves.contains_key(&cave2) {
+    if !names.contains_key(&cave2) {
       let new_cave = Cave {
         large: cave2.to_uppercase() == cave2,
+        start: cave2 == "start",
         end: cave2 == "end",
         edges: HashSet::new()
       };
-      caves.insert(cave2.clone(), new_cave);
+      caves.push(new_cave);
+      names.insert(cave2.clone(), id_cntr);
+      id_cntr += 1;
     }
-    caves.get_mut(&cave1).unwrap().edges.insert(cave2.clone());
-    caves.get_mut(&cave2).unwrap().edges.insert(cave1.clone());
+    caves[*names.get(&cave1).unwrap() as usize].edges.insert(*names.get(&cave2).unwrap());
+    caves[*names.get(&cave2).unwrap() as usize].edges.insert(*names.get(&cave1).unwrap());
   }
 
   // Part 1
   let part1 = Instant::now();
-  let mut visited: HashSet<String> = HashSet::new();
-  let mut path: Vec<String> = Vec::new();
-  let mut n_paths = cave_dive(&caves, &mut path, &"start".to_owned(), &mut visited, false);
+  let mut visited: Vec<u8> = vec![0; caves.len()];
+  let mut n_paths = cave_dive(&caves, *names.get("start").unwrap(), &mut visited, false);
   println!("Part 1: {}", n_paths);
 
   // Part 2
   let part2 = Instant::now();
-  visited = HashSet::new();
-  path = Vec::new();
-  n_paths = cave_dive(&caves, &mut path, &"start".to_owned(), &mut visited, true);
+  visited = vec![0; caves.len()];
+  n_paths = cave_dive(&caves, *names.get("start").unwrap(), &mut visited, true);
   println!("Part 2: {}", n_paths);
 
   let end = Instant::now();
