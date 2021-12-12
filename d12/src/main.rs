@@ -28,34 +28,34 @@ fn cave_dive(caves: &HashMap::<String, Cave>,
              mut path: &mut Vec::<String>,
              root: &String,
              mut visited: &mut HashSet<String>,
-             mut double_visit: bool) -> usize {
+             double_visit: bool) -> usize {
   let mut count = 0;
   if !caves.get(root).unwrap().large {
-    if double_visit && root != "start" {
-      double_visit = false;
-    } else {
-      visited.insert(root.clone());
-    }
+    visited.insert(root.clone());
   }
   path.push(root.clone());
   if caves.get(root).unwrap().end {
-    println!("{:?} {}", path, double_visit);
     count += 1;
   } else {
     for neighbour in caves.get(root).unwrap().edges.iter() {
-      if !visited.contains(neighbour) {
+      if visited.contains(neighbour) && (neighbour != "start" && neighbour != "end" && double_visit) {
+        count += cave_dive(&caves, &mut path, neighbour, &mut visited, false);
+      } else if !visited.contains(neighbour) {
         count += cave_dive(&caves, &mut path, neighbour, &mut visited, double_visit);
       }
     }
   }
   path.pop();
-  visited.remove(root);
+  // Inefficient
+  if !path.contains(root) {
+    visited.remove(root);
+  }
   return count;
 }
 
 fn main() {
   let start = Instant::now();
-  let input_file = "test_input.txt";
+  let input_file = "input.txt";
   let f = File::open(input_file).expect("Unable to open file");
   let f = BufReader::new(f);
 
