@@ -17,5 +17,5 @@ Run with `cargo run --release`. All times in µs.
 | 8 | Seven Segment Search  |  440  | 21 | 1503 | Use `HashSet` for logic. |
 | 9 | Smoke Basin  |  228  | 108 | 304 | Manual `Matrix` class. Part 2 recursive. |
 | 10 | Syntax Scoring  |  79  | 123 | 61 | `Vec.pop()` to make a stack. |
-| 11 | Dumbo Octopus  |  66  | 132 | 126 | Manual `OctoMatrix` class. Line scan to update. `octo_emoji` writes 🐙/✨ |
+| 11 | Dumbo Octopus  |  66  | 132 | 126 | Manual `OctoMatrix` class. Line scan to update. `octo_emoji` writes 🐙/✨. |
 
