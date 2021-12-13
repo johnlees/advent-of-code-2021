@@ -19,4 +19,5 @@ Run with `cargo run --release`. All times in µs.
 | 10 | Syntax Scoring  |  79  | 123 | 61 | `Vec.pop()` to make a stack. |
 | 11 | Dumbo Octopus  |  66  | 132 | 126 | Manual `OctoMatrix` class. Line scan to update. `octo_emoji` writes 🐙/✨. |
 | 12 | Passage Pathing  |  275  | 256 | 7045 | Recursive DFS ignoring some nodes. |
+| 13 | Transparent Origami  |  609  | 102 | 347 | BTreeSet for paper. Termion to print letters. |
 
