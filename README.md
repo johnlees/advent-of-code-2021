@@ -19,7 +19,7 @@ Run with `RUSTFLAGS="-C target-cpu=native" cargo run --release`. All times in µ
 | 10 | Syntax Scoring  |  79  | 123 | 61 | `Vec.pop()` to make a stack. |
 | 11 | Dumbo Octopus  |  66  | 132 | 126 | Manual `OctoMatrix` class. Line scan to update. `octo_emoji` writes 🐙/✨. |
 | 12 | Passage Pathing  |  275  | 256 | 5866 | Recursive DFS ignoring some nodes. |
-| 13 | Transparent Origami  |  609  | 102 | 347 | `BTreeSet` for paper. Termion to print letters. |
+| 13 | Transparent Origami  |  609  | 80 | 237 | `HashSet` for paper. |
 | 14 | Extended polymerization  |  127  | 2440 | 440 | Part 1: brute force + FM-index. Part 2: `BTreeMap` of 2-mers. |
 
 ## Other notes
@@ -29,6 +29,11 @@ Run with `RUSTFLAGS="-C target-cpu=native" cargo run --release`. All times in µ
 Seems slow. I've tried `ndarray` and `nalgebra` slices which are very similar and neat. Manual Matrix class is similar. I would guess a sparse matrix solution (like for d13) would be better.
 
 ### Day 13
+
+Originally I used Termion, but in many cases it was printing over other terminal output.
+`HashSet` slightly faster than `BTreeSet`.
+
+### Day 14
 
 The part two solution is of course faster, but I tried using an FM-index to do the counts in part 1, which works easily enough (although of
 course these could have been computed on-the-fly).

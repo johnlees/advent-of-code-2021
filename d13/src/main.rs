@@ -2,7 +2,7 @@
 use std::fs::File;
 use std::io::{BufRead, BufReader};
 use std::time::Instant;
-use std::collections::{BTreeSet, VecDeque};
+use std::collections::{HashSet, VecDeque};
 
 use lazy_static::lazy_static;
 use regex::Regex;
@@ -24,8 +24,8 @@ fn parse_line(text: &str) -> (bool, i32) {
   return(horizontal, intercept);
 }
 
-fn do_fold(paper: &BTreeSet::<(i32, i32)>, horizontal: bool, intercept: i32) -> BTreeSet::<(i32, i32)> {
-  let mut folded_paper: BTreeSet::<(i32, i32)> = BTreeSet::new();
+fn do_fold(paper: &HashSet::<(i32, i32)>, horizontal: bool, intercept: i32) -> HashSet::<(i32, i32)> {
+  let mut folded_paper: HashSet::<(i32, i32)> = HashSet::new();
   for point in paper.iter() {
     let (mut x, mut y) = point;
     if horizontal && y > intercept {
@@ -45,7 +45,7 @@ fn main() {
   let f = BufReader::new(f);
 
   // Read grid
-  let mut paper: BTreeSet::<(i32, i32)> = BTreeSet::new();
+  let mut paper: HashSet::<(i32, i32)> = HashSet::new();
   let mut fold_directions: VecDeque::<(bool, i32)> = VecDeque::new();
   let mut fold_lines = false;
   for line in f.lines() {
@@ -74,13 +74,19 @@ fn main() {
     let (horizontal, intercept) = instruction;
     paper = do_fold(&paper, *horizontal, *intercept);
   }
-  println!("Part 2");
+  let x_len = *paper.iter().map(|(x,_y)| x).max().unwrap() as usize + 1;
+  let y_len = *paper.iter().map(|(_x,y)| y).max().unwrap() as usize + 1;
+  let mut empty_lines: Vec::<char> = vec!['.'; x_len * y_len];
   for point in paper.iter() {
     let (x, y) = point;
-    print!("{}{}", termion::cursor::Goto((x + 1) as u16, (y + 1) as u16), "#");
+    empty_lines[*y as usize * x_len + *x as usize] = '#';
   }
-  println!();
-  println!();
+  println!("Part 2");
+  for row in 0..y_len {
+    let row_string: String = empty_lines[(row * x_len)..((row + 1) * x_len)].into_iter().collect();
+    println!("{}", row_string);
+  }
+
   let end = Instant::now();
   println!("parsing: {}µs\npart 1: {}µs\npart 2: {}µs",
            part1.duration_since(start).as_micros(),
