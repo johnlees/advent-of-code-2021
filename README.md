@@ -21,6 +21,7 @@ Run with `RUSTFLAGS="-C target-cpu=native" cargo run --release`. All times in µ
 | 12 | Passage Pathing  |  275  | 256 | 5866 | Recursive DFS ignoring some nodes. |
 | 13 | Transparent Origami  |  609  | 80 | 237 | `HashSet` for paper. |
 | 14 | Extended polymerization  |  127  | 2440 | 440 | Part 1: brute force + FM-index. Part 2: `BTreeMap` of 2-mers. |
+| 15 | Chiton  |  209  | 1937 | 64008 | Djikstra's algorithm from `BinaryHeap` docs. |
 
 ## Other notes
 
