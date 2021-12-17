@@ -179,7 +179,7 @@ fn main() {
   println!("Part 1: {}", version_sum);
 
   let part2 = Instant::now();
-  println!("Part 1: {}", run_operations(&packets, packets.len() - 1));
+  println!("Part 2: {}", run_operations(&packets, packets.len() - 1));
 
   let end = Instant::now();
   println!("parsing: {}µs\npart 1: {}µs\npart 2: {}µs",
