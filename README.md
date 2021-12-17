@@ -20,8 +20,9 @@ Run with `RUSTFLAGS="-C target-cpu=native" cargo run --release`. All times in µ
 | 11 | Dumbo Octopus  |  66  | 132 | 126 | Manual `OctoMatrix` class. Line scan to update. `octo_emoji` writes 🐙/✨. |
 | 12 | Passage Pathing  |  275  | 256 | 5866 | Recursive DFS ignoring some nodes. |
 | 13 | Transparent Origami  |  609  | 80 | 237 | `HashSet` for paper. |
-| 14 | Extended polymerization  |  127  | 2440 | 440 | Part 1: brute force + FM-index. Part 2: `BTreeMap` of 2-mers. |
+| 14 | Extended Polymerization  |  127  | 2440 | 440 | Part 1: brute force + FM-index. Part 2: `BTreeMap` of 2-mers. |
 | 15 | Chiton  |  209  | 1937 | 64008 | Djikstra's algorithm from `BinaryHeap` docs. |
+| 16 | Packet Decoder  |  226  | 122 | 4 | `BitVec`, recusion and struct with children indexed in a `Vec`. |
 
 ## Other notes
 
@@ -38,3 +39,9 @@ Originally I used Termion, but in many cases it was printing over other terminal
 
 The part two solution is of course faster, but I tried using an FM-index to do the counts in part 1, which works easily enough (although of
 course these could have been computed on-the-fly).
+
+### Day 16
+
+- I was very frustrated by not being able to work out how to write a generic `bv_to_int` which would have been easy in C++. Writing `let x: T = 0` fails to compile!
+- Not sure `BitVec` is quite what I think it is, need to check its underlying representation later. (Note: `u8` and `u64` template parameter made no difference to speed in this case).
+- Avoided using `Rc` to point to other nodes in the graph which might have been nice. Was easier to find a way of avoiding using smart pointers, which wasn't hugely satisfying.
