@@ -23,6 +23,7 @@ Run with `RUSTFLAGS="-C target-cpu=native" cargo run --release`. All times in µ
 | 14 | Extended Polymerization  |  127  | 2440 | 440 | Part 1: brute force + FM-index. Part 2: `BTreeMap` of 2-mers. |
 | 15 | Chiton  |  209  | 1937 | 64008 | Djikstra's algorithm from `BinaryHeap` docs. |
 | 16 | Packet Decoder  |  226  | 122 | 4 | `BitVec`, recusion and struct with children indexed in a `Vec`. |
+| 17 | Trick Shot  |  370  | 523 | 232 | Grid-search, using `.map()` over (x, y) pairs. |
 
 ## Other notes
 
@@ -45,3 +46,7 @@ course these could have been computed on-the-fly).
 - I was very frustrated by not being able to work out how to write a generic `bv_to_int` which would have been easy in C++. Writing `let x: T = 0` fails to compile!
 - Not sure `BitVec` is quite what I think it is, need to check its underlying representation later. (Note: `u8` and `u64` template parameter made no difference to speed in this case).
 - Avoided using `Rc` to point to other nodes in the graph which might have been nice. Was easier to find a way of avoiding using smart pointers, which wasn't hugely satisfying.
+
+### Day 17
+
+Regex is quite slow here.
