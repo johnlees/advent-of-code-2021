@@ -23,7 +23,7 @@ Run with `RUSTFLAGS="-C target-cpu=native" cargo run --release`. All times in µ
 | 14 | Extended Polymerization  |  127  | 2440 | 440 | Part 1: brute force + FM-index. Part 2: `BTreeMap` of 2-mers. |
 | 15 | Chiton  |  209  | 1937 | 64008 | Djikstra's algorithm from `BinaryHeap` docs. |
 | 16 | Packet Decoder  |  226  | 122 | 4 | `BitVec`, recusion and struct with children indexed in a `Vec`. |
-| 17 | Trick Shot  |  370  | 523 | 232 | Grid-search, using `.map()` over (x, y) pairs. |
+| 17 | Trick Shot  |  370  | 638 | 5 | Grid-search, using `.map()` over (x, y) pairs. |
 
 ## Other notes
 
@@ -49,4 +49,6 @@ course these could have been computed on-the-fly).
 
 ### Day 17
 
-Regex is quite slow here.
+- Regex is quite slow here.
+- Doing an operation on an `.iter().map()` e.g. `.sum()` or `.max()` is a little
+(10-20%) quicker than storing it all with `.collect()`.

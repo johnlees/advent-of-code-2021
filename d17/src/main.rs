@@ -60,7 +60,7 @@ fn main() {
   let part1 = Instant::now();
   let xinit_min = (0.5 * ((8.0 * xmin as f64 + 1.0).sqrt() - 1.0)).ceil() as i32;
   let xinit_max = xmax;
-  let yinit_min = ymin;
+  let yinit_min = ymin; // NB: for part 1 this would be 0, giving fewer to search
   let yinit_max = -ymin; // Ansatz
   let mut guess_grid: Vec::<(i32, i32)> = Vec::new();
   for xinit in xinit_min..=xinit_max {
@@ -68,23 +68,19 @@ fn main() {
       guess_grid.push((xinit, yinit));
     }
   }
-  let best_y = guess_grid.iter()
-                          .map(|(x, y)| {
-                            let (hit, ytop) = fire_drone(*x, *y, xmin, xmax, ymin, ymax);
-                            if hit {ytop} else {i32::MIN}
-                          })
-                          .max()
-                          .unwrap();
-  println!("Part 1: {}", best_y);
+  let passing_y: Vec::<i32> = guess_grid.iter()
+                                        .map(|(x, y)| {
+                                          let (hit, ytop) = fire_drone(*x, *y, xmin, xmax, ymin, ymax);
+                                          if hit {ytop} else {i32::MIN}
+                                        })
+                                        .collect();
+  println!("Part 1: {}", passing_y.iter().max().unwrap());
 
   // Part 2
   let part2 = Instant::now();
-  let trajectories: i32 = guess_grid.iter()
-                         .map(|(x, y)| {
-                            let (hit, _ytop) = fire_drone(*x, *y, xmin, xmax, ymin, ymax);
-                            if hit {1} else {0}
-                          })
-                          .sum();
+  let trajectories: i32 = passing_y.iter()
+                                   .map(|x| if *x > i32::MIN {1} else {0})
+                                   .sum();
   println!("Part 2: {}", trajectories);
 
   let end = Instant::now();
