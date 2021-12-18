@@ -25,9 +25,9 @@ fn parse_line(text: &str) -> (i32, i32, i32, i32) {
   return(xmin, xmax, ymin, ymax);
 }
 
-fn fire_drone(init_xv: i32, init_yv: i32, xmin: i32, xmax: i32, ymin: i32, ymax: i32) -> (bool, i32) {
+fn fire_drone(init_xv: i32, init_yv: i32, xmin: i32, xmax: i32, ymin: i32, ymax: i32) -> Option<i32> {
   let (mut x, mut y, mut xv, mut yv) = (0, 0, init_xv, init_yv);
-  let mut hit = false;
+  let mut hit = None;
   let mut max_y = 0;
   loop {
     x += xv;
@@ -36,13 +36,13 @@ fn fire_drone(init_xv: i32, init_yv: i32, xmin: i32, xmax: i32, ymin: i32, ymax:
     yv -= 1;
     max_y = if y > max_y {y} else {max_y};
     if x <= xmax && x >= xmin && y <= ymax && y >= ymin {
-      hit = true;
+      hit = Some(max_y);
       break;
     } else if x > xmax || y < ymin {
       break;
     }
   }
-  return (hit, max_y);
+  return hit;
 }
 
 fn main() {
@@ -69,10 +69,7 @@ fn main() {
     }
   }
   let passing_y: Vec::<i32> = guess_grid.iter()
-                                        .map(|(x, y)| {
-                                          let (hit, ytop) = fire_drone(*x, *y, xmin, xmax, ymin, ymax);
-                                          if hit {ytop} else {i32::MIN}
-                                        })
+                                        .map(|(x, y)| fire_drone(*x, *y, xmin, xmax, ymin, ymax).unwrap_or(i32::MIN))
                                         .collect();
   println!("Part 1: {}", passing_y.iter().max().unwrap());
 
