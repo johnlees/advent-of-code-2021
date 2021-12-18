@@ -145,23 +145,23 @@ fn main() {
   let mut f = BufReader::new(f);
 
   // Read hex
-  let hex_map: [BitVec::<Lsb0, u64>; 16] = [
-    bitvec![Lsb0, u64; 0,0,0,0],
-    bitvec![Lsb0, u64; 0,0,0,1],
-    bitvec![Lsb0, u64; 0,0,1,0],
-    bitvec![Lsb0, u64; 0,0,1,1],
-    bitvec![Lsb0, u64; 0,1,0,0],
-    bitvec![Lsb0, u64; 0,1,0,1],
-    bitvec![Lsb0, u64; 0,1,1,0],
-    bitvec![Lsb0, u64; 0,1,1,1],
-    bitvec![Lsb0, u64; 1,0,0,0],
-    bitvec![Lsb0, u64; 1,0,0,1],
-    bitvec![Lsb0, u64; 1,0,1,0],
-    bitvec![Lsb0, u64; 1,0,1,1],
-    bitvec![Lsb0, u64; 1,1,0,0],
-    bitvec![Lsb0, u64; 1,1,0,1],
-    bitvec![Lsb0, u64; 1,1,1,0],
-    bitvec![Lsb0, u64; 1,1,1,1],
+  let hex_map: [BitVec::<Lsb0, u8>; 16] = [
+    bitvec![Lsb0, u8; 0,0,0,0],
+    bitvec![Lsb0, u8; 0,0,0,1],
+    bitvec![Lsb0, u8; 0,0,1,0],
+    bitvec![Lsb0, u8; 0,0,1,1],
+    bitvec![Lsb0, u8; 0,1,0,0],
+    bitvec![Lsb0, u8; 0,1,0,1],
+    bitvec![Lsb0, u8; 0,1,1,0],
+    bitvec![Lsb0, u8; 0,1,1,1],
+    bitvec![Lsb0, u8; 1,0,0,0],
+    bitvec![Lsb0, u8; 1,0,0,1],
+    bitvec![Lsb0, u8; 1,0,1,0],
+    bitvec![Lsb0, u8; 1,0,1,1],
+    bitvec![Lsb0, u8; 1,1,0,0],
+    bitvec![Lsb0, u8; 1,1,0,1],
+    bitvec![Lsb0, u8; 1,1,1,0],
+    bitvec![Lsb0, u8; 1,1,1,1],
   ];
 
   let mut bits: BitVec::<Lsb0, u8> = BitVec::new();
